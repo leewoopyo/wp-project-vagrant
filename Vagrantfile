@@ -1,0 +1,40 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+# edited by lee
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+k8s_cluster = {
+  "centos7_k8s_master" => { :ip => "192.168.50.100", :cpus => 4, :memory => 8192 },
+  "centos7_k8s_node1" => { :ip => "192.168.50.101", :cpus => 2, :memory => 4096 },
+  "centos7_k8s_node2" => { :ip => "192.168.50.102", :cpus => 2, :memory => 4096 },
+}
+ 
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  k8s_cluster.each do |hostname, info|
+
+    config.vm.define hostname do |cfg|
+      cfg.vm.provider "virtualbox" do |vb,override|
+        config.vm.box = "centos/7"
+        override.vm.network "private_network", ip: "#{info[:ip]}"
+        override.vm.host_name = hostname
+        vb.name = hostname
+				vb.gui = true
+        vb.customize ["modifyvm", :id, "--memory", info[:memory], "--cpus", info[:cpus]]
+				if "#{hostname}" == "centos7_k8s_master" then
+					override.vm.provision "shell", path: "ssh_conf.sh", privileged: true
+					override.vm.provision "shell", path: "k8s_cluster_install.sh", privileged: true
+					override.vm.provision "shell", path: "run_in_master.sh", privileged: true
+					override.vm.provision "shell", path: "account.sh", privileged: false
+					override.vm.provision "shell", path: "send_pub_key.sh", privileged: false
+				else
+					override.vm.provision "shell", path: "ssh_conf.sh", privileged: true
+					override.vm.provision "shell", path: "k8s_cluster_install.sh", privileged: true
+				end  # if end
+      end  # provider end
+    end  # define end
+  end  # each end
+end # configure end
+
