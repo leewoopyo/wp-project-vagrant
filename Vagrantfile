@@ -6,9 +6,9 @@
 VAGRANTFILE_API_VERSION = "2"
 
 k8s_cluster = {
-  "centos7_k8s_master" => { :ip => "192.168.50.100", :cpus => 4, :memory => 8192 },
-  "centos7_k8s_node1" => { :ip => "192.168.50.101", :cpus => 2, :memory => 4096 },
-  "centos7_k8s_node2" => { :ip => "192.168.50.102", :cpus => 2, :memory => 4096 },
+  "centos7-k8s-master" => { :ip => "192.168.50.100", :cpus => 4, :memory => 8192 },
+  "centos7-k8s-node1" => { :ip => "192.168.50.101", :cpus => 2, :memory => 4096 },
+  "centos7-k8s-node2" => { :ip => "192.168.50.102", :cpus => 2, :memory => 4096 },
 }
  
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
