@@ -70,6 +70,6 @@ tee /etc/hosts <<EOF
 :1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 EOF
 
-echo "192.168.50.50   master.example.com    master" >> /etc/hosts
-echo "192.168.50.51   node1.example.com     node1" >> /etc/hosts
-echo "192.168.50.52   node2.example.com     node2" >> /etc/hosts
+echo "192.168.50.100   k8s.master.com    master" >> /etc/hosts
+echo "192.168.50.101   k8s.node1.com     node1" >> /etc/hosts
+echo "192.168.50.102   k8s.node2.com     node2" >> /etc/hosts
