@@ -1,10 +1,13 @@
 #! /bin/bash
 # This script needed run only master node
-pod_network="192.168.235.0/24"
+pod_network="192.168.198.0/24"
 apiserver_network=$(hostname -i)
+
+### 쿠버네티스 초기화 명령 실행 ###
 # configure pod network
 kubeadm init --pod-network-cidr=$pod_network --apiserver-advertise-address=$apiserver_network | tee /home/vagrant/kubeadm_init_output
 grep -A 2 'kubeadm join' /home/vagrant/kubeadm_init_output > /home/vagrant/token
+# kubeadm token create --print-join-command > ~/join.sh
 
 if [ $? -ne 0 ]
 then

@@ -1,8 +1,13 @@
 #! /bin/bash
 
+### 환경변수 설정 ###
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown vagrant:vagrant  /home/vagrant/.kube/config
+
+### Kubectl 자동완성 기능 설치 ###
+yum install bash-completion -y
+source <(kubectl completion bash)
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 
 # enable docker command 
