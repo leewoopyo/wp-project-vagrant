@@ -38,25 +38,25 @@ yum -y update
 yum -y install vim nano net-tools bridge-utils sshpass
 
 ### 도커 설치 ###
-yum install -y yum-utils
+yum install -y yum-utils device-mapper-persistent-data lvm2 
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-yum -y install docker-ce-3:20.10.17-3.el7  docker-ce-cli-1:20.10.17-3.el7 containerd.io
+yum install -y containerd.io-1.4.9-3.1.el7 docker-ce-3:20.10.8-3.el7.x86_64 docker-ce-cli-1:20.10.8-3.el7.x86_64
 systemctl start docker
 systemctl enable docker
 
 ### deamon.json 설정 ###
 # defautl cgroup driver(cgroupfs) to systemd
-tee /etc/docker/daemon.json <<EOF
+cat > /etc/docker/daemon.json <<EOF
 {
-    "exec-opts": ["native.cgroupdriver=systemd"],
-    "log-driver": "json-file",
-    "log-opts": {
-        "max-size": "100m"
-    },
-    "storage-driver": "overlay2",
-    "storage-opts": [
-        "overlay2.override_kernel_check=true"
-    ]
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2",
+  "storage-opts": [
+    "overlay2.override_kernel_check=true"
+  ]
 }
 EOF
 mkdir -p /etc/systemd/system/docker.service.d
@@ -91,7 +91,7 @@ EOF
 ### 쿠버네티스 설치 ###
 # install & run
 #yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
-yum install -y kubelet-1.23.5 kubeadm-1.23.5 kubectl-1.23.5 --disableexcludes=kubernetes
+yum install -y kubelet-1.22.0-0.x86_64 kubeadm-1.22.0-0.x86_64 kubectl-1.22.0-0.x86_64 --disableexcludes=kubernetes
 
 ### 쿠버네티스 재시작 ###
 systemctl enable kubelet && systemctl start kubelet
